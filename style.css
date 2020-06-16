@@ -1,9 +1,9 @@
 :root {
   --unit: 1px;
-  --value-size: 40;
+  --value-size: 20;
   --value-count: 20;
   --size-cell: calc(var(--value-size) * var(--unit));
-  --mult-size: calc(var(--value-count) * var(--size-cell))
+  --mult-size: calc(var(--value-count) * var(--size-cell));
 }
 
 html, body {
@@ -24,4 +24,12 @@ body {
 .game div {
   width: var(--size-cell);
   height: var(--size-cell);
+}
+.enemy {
+  background: red;
+  border-radius: 50%;
+}
+.player {
+  background: greenyellow;
+  border-radius: 50% 50% 50% 50% / 100% 100% 0 0;
 }
