@@ -42,17 +42,26 @@ const moveEnemy = () => {
   })
 
   //game over
-  // if(blocks[playerIndex].classList.contains('enemy')){
-  //   alert('game over!');
-  //   return;
-  // }
+  if(blocks[playerIndex].classList.contains('enemy')){
+    alert('game over!');
+    endGame();
+    return;
+  }
 
   //game over
   for (let i = 0; i < indexEnemies.length; i++) {
     if (indexEnemies[i] > blocks.length - countRow) {
       alert('game over!');
+      endGame();
       return;
     }
+  }
+
+  //win!!
+  if(killEnemy.length === indexEnemies.length){
+    alert('WIN!!!');
+    endGame();
+    return;
   }
 
   setTimeout(moveEnemy, 300);
@@ -73,8 +82,6 @@ const movePlayer = (e) => {
   }
   blocks[playerIndex].classList.add('player');
 };
-
-document.addEventListener('keydown', movePlayer);
 
 const fire = e => {
 if(e.code === "Space"){
@@ -110,3 +117,9 @@ if(e.code === "Space"){
 };
 
 document.addEventListener('keydown', fire);
+document.addEventListener('keydown', movePlayer);
+
+const endGame = () => {
+  document.removeEventListener('keydown', fire);
+  document.removeEventListener('keydown', movePlayer);
+}
