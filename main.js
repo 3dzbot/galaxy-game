@@ -10,6 +10,7 @@ const indexEnemies = [
   43,44,45,46,47,48,49,50,51,52,53,54,55,56,
   63,64,65,66,67,68,69,70,71,72,73,74,75,76
 ];
+const killEnemy = [];
 
 //add enemy-class
 for (const enemy of indexEnemies) {
@@ -31,9 +32,28 @@ const moveEnemy = () => {
   for (let i = 0; i < indexEnemies.length; i++){
     indexEnemies[i] += move;
   };
-  indexEnemies.forEach(index => {
-    blocks[index].classList.add('enemy');
+
+  //step 1 and step 2 after kill
+  indexEnemies.forEach((index, i) => {
+    //если данные массива не находятся в другом массиве (не убит)
+    if(!killEnemy.includes(i)){
+      blocks[index].classList.add('enemy');
+    }
   })
+
+  //game over
+  // if(blocks[playerIndex].classList.contains('enemy')){
+  //   alert('game over!');
+  //   return;
+  // }
+
+  //game over
+  for (let i = 0; i < indexEnemies.length; i++) {
+    if (indexEnemies[i] > blocks.length - countRow) {
+      alert('game over!');
+      return;
+    }
+  }
 
   setTimeout(moveEnemy, 300);
 
@@ -55,3 +75,38 @@ const movePlayer = (e) => {
 };
 
 document.addEventListener('keydown', movePlayer);
+
+const fire = e => {
+if(e.code === "Space"){
+  let bulletIndex = playerIndex;
+
+  const flyBullet = () => {
+    blocks[bulletIndex].classList.remove('bullet');
+    bulletIndex -= countRow;
+    blocks[bulletIndex].classList.add('bullet');
+
+    if(bulletIndex < countRow) {
+
+      setTimeout(() => {
+        blocks[bulletIndex].classList.remove('bullet');
+      }, 50);
+      return;
+    }
+
+    if(blocks[bulletIndex].classList.contains('enemy')){
+      blocks[bulletIndex].classList.remove('bullet');
+      blocks[bulletIndex].classList.remove('enemy');
+
+      const indexKillEnemy = indexEnemies.indexOf(bulletIndex);
+      killEnemy.push(indexKillEnemy);
+      return;
+    }
+
+    setTimeout(flyBullet, 50);
+    }
+  
+  flyBullet();
+}
+};
+
+document.addEventListener('keydown', fire);
